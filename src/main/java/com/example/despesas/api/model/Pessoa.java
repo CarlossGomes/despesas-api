@@ -2,13 +2,13 @@ package com.example.despesas.api.model;
 
 import java.io.Serializable;
 
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,20 +16,25 @@ import lombok.EqualsAndHashCode;
 @Data
 @Entity
 @EqualsAndHashCode
-@Table(name = "categoria")
-public class Categoria implements Serializable {
-
+@Table(name = "pessoa")
+public class Pessoa implements Serializable{
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2972332571743270122L;
-
+	private static final long serialVersionUID = 3668730381959220739L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigo;
-
+	
+	@Embedded
+	private Endereco endereco;
+	
 	@NotNull
-	@Size(min = 3, max = 20)
 	private String nome;
+	
+	@NotNull
+	private Boolean ativo;
 
 }

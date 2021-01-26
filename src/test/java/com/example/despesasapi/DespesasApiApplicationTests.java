@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DespesasApi1ApplicationTests {
+class DespesasApiApplicationTests {
 
 	@Test
 	void contextLoads() {

@@ -16,37 +16,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.despesas.api.model.Categoria;
-import com.example.despesas.api.service.CategoriaService;
+import com.example.despesas.api.model.Pessoa;
+import com.example.despesas.api.service.PessoaService;
 
 @RestController
-@RequestMapping("/categorias")
-public class CategoriaResource {
-
+@RequestMapping("/pessoas")
+public class PessoaResource {
+	
 	@Autowired
-	private CategoriaService categoriaService;
-
+	private PessoaService pessoaService;
+	
 	@GetMapping
-	public List<Categoria> listar() {
-		return categoriaService.listar();
-
-		// return !categorias.isEmpty() ? ResponseEntity.ok(categorias) :
-		// ResponseEntity.noContent().build();
+	public List<Pessoa> listar() {
+		return pessoaService.listar();
 	}
 
 	@PostMapping
-	public ResponseEntity<Categoria> criar(@Valid @RequestBody Categoria categoria, HttpServletResponse response) {
-		Categoria categoriaSalva = categoriaService.salvar(categoria);
+	public ResponseEntity<Pessoa> criar(@Valid @RequestBody Pessoa pessoa, HttpServletResponse response) {
+		Pessoa pessoaSalva = pessoaService.salvar(pessoa);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{codigo}")
-				.buildAndExpand(categoriaSalva.getCodigo()).toUri();
+				.buildAndExpand(pessoaSalva.getCodigo()).toUri();
 		response.setHeader("Location", uri.toASCIIString());
-		return ResponseEntity.created(uri).body(categoriaSalva);
+		return ResponseEntity.created(uri).body(pessoaSalva);
 	}
 
 	@GetMapping("/{codigo}")
 	public ResponseEntity<?> buscarPorCodigo(@PathVariable Long codigo) {
-		Categoria categoria = categoriaService.buscarPorCodigo(codigo);
-		return categoria!=null ? ResponseEntity.ok(categoria) : ResponseEntity.noContent().build();
+		Pessoa pessoa = pessoaService.buscarPorCodigo(codigo);
+		return pessoa!=null ? ResponseEntity.ok(pessoa) : ResponseEntity.noContent().build();
 	}
-
 }
