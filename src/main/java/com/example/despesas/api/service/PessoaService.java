@@ -7,7 +7,9 @@ import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.despesas.api.converter.PessoaConverter;
 import com.example.despesas.api.model.Pessoa;
+import com.example.despesas.api.model.dtos.PessoaDTO;
 import com.example.despesas.api.repository.PessoaRepository;
 
 @Service
@@ -16,20 +18,24 @@ public class PessoaService {
 	@Autowired
 	private PessoaRepository pessoaRepository;
 
+	@Autowired
+	private PessoaConverter pessoaConverter;
+
 	@Transactional
-	public List<Pessoa> listar() {
+	public List<PessoaDTO> listar() {
 		List<Pessoa> lista = pessoaRepository.findAll();
-		return lista;
+		return pessoaConverter.toListToEntityToDto(lista);
 	}
 
 	@Transactional
-	public Pessoa salvar(Pessoa pessoa) {
-		return pessoaRepository.save(pessoa);
+	public PessoaDTO salvar(PessoaDTO pessoaDTO) {
+		Pessoa pessoa = pessoaConverter.toDtoToEntity(pessoaDTO);
+		return pessoaConverter.toEntityToDto(pessoaRepository.save(pessoa));
 	}
 
 	@Transactional
-	public Pessoa buscarPorCodigo(Long codigo) {
-		return pessoaRepository.findOne(codigo);
+	public PessoaDTO buscarPorCodigo(Long codigo) {
+		return pessoaConverter.toEntityToDto(pessoaRepository.findOne(codigo));
 	}
 
 }

@@ -22,7 +22,7 @@ import com.example.despesas.api.util.Mensagens;
 
 @ControllerAdvice
 public class DespesasExceptionHandler extends ResponseEntityExceptionHandler {
-	
+
 	@Autowired
 	private MessageSource messageSource;
 
@@ -39,7 +39,6 @@ public class DespesasExceptionHandler extends ResponseEntityExceptionHandler {
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
-
 		List<Erro> erros = criarListaDeErros(ex.getBindingResult());
 		return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
 	}
@@ -52,7 +51,6 @@ public class DespesasExceptionHandler extends ResponseEntityExceptionHandler {
 			String mensagemDesenvolvedor = fieldError.toString();
 			erros.add(new Erro(mensagemUsuario, mensagemDesenvolvedor));
 		}
-
 		return erros;
 	}
 
