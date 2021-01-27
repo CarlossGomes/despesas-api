@@ -38,4 +38,9 @@ public class PessoaService {
 		return pessoaConverter.toEntityToDto(pessoaRepository.findOne(codigo));
 	}
 
+	@Transactional
+	public void remover(Long codigo) {
+		pessoaRepository.delete(codigo);
+	}
+
 }
