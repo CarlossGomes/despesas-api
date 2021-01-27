@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.despesas.api.event.RecursoCriadoEvent;
 import com.example.despesas.api.model.dtos.LancamentoDTO;
+import com.example.despesas.api.repository.filter.LancamentoFilter;
 import com.example.despesas.api.service.LancamentoService;
+import com.example.despesas.api.service.exception.PessoaInexistenteOuInativaException;
 
 @RestController
 @RequestMapping("/lancamentos")
@@ -31,8 +33,8 @@ public class LancamentoResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
-	public List<LancamentoDTO> listar() {
-		return lancamentoService.listar();
+	public List<LancamentoDTO> pesquisar(LancamentoFilter lancamentoFilter) {
+		return lancamentoService.filtrar(lancamentoFilter);
 	}
 
 	@GetMapping("/{codigo}")
@@ -42,7 +44,7 @@ public class LancamentoResource {
 
 	@PostMapping
 	public ResponseEntity<LancamentoDTO> criar(@Valid @RequestBody LancamentoDTO lancamentoDTO,
-			HttpServletResponse response) {
+			HttpServletResponse response) throws PessoaInexistenteOuInativaException {
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoDTO.getCodigo()));
 		return ResponseEntity.status(HttpStatus.CREATED).body(lancamentoService.salvar(lancamentoDTO));
 	}

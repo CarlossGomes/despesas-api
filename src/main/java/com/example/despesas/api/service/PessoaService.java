@@ -13,6 +13,7 @@ import com.example.despesas.api.converter.PessoaConverter;
 import com.example.despesas.api.model.Pessoa;
 import com.example.despesas.api.model.dtos.PessoaDTO;
 import com.example.despesas.api.repository.PessoaRepository;
+import com.example.despesas.api.service.exception.PessoaInexistenteOuInativaException;
 
 @Service
 public class PessoaService {
@@ -62,6 +63,13 @@ public class PessoaService {
 		PessoaDTO pessoaDTO = buscarPorCodigo(codigo);
 		pessoaDTO.setAtivo(ativo);
 		pessoaRepository.save(pessoaConverter.toDtoToEntity(pessoaDTO));
+	}
+
+	public void validarIsAtivo(Long codigo) throws PessoaInexistenteOuInativaException {
+		Pessoa pessoa = pessoaRepository.findOne(codigo);
+		if (pessoa == null || pessoa.getAtivo() == false) {
+			throw new PessoaInexistenteOuInativaException();
+		}
 	}
 
 }
