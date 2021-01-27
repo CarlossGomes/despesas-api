@@ -4,7 +4,9 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.despesas.api.converter.PessoaConverter;
@@ -35,12 +37,31 @@ public class PessoaService {
 
 	@Transactional
 	public PessoaDTO buscarPorCodigo(Long codigo) {
-		return pessoaConverter.toEntityToDto(pessoaRepository.findOne(codigo));
+		Pessoa pessoa = pessoaRepository.findOne(codigo);
+		if (pessoa == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+
+		return pessoaConverter.toEntityToDto(pessoa);
 	}
 
 	@Transactional
 	public void remover(Long codigo) {
 		pessoaRepository.delete(codigo);
+	}
+
+	@Transactional
+	public PessoaDTO atualizar(Long codigo, PessoaDTO pessoaDTO) {
+		PessoaDTO pessoaSalva = buscarPorCodigo(codigo);
+		BeanUtils.copyProperties(pessoaDTO, pessoaSalva, "codigo");
+		pessoaRepository.save(pessoaConverter.toDtoToEntity(pessoaSalva));
+		return pessoaSalva;
+	}
+
+	public void atualizaPropriedadeAtivo(Long codigo, Boolean ativo) {
+		PessoaDTO pessoaDTO = buscarPorCodigo(codigo);
+		pessoaDTO.setAtivo(ativo);
+		pessoaRepository.save(pessoaConverter.toDtoToEntity(pessoaDTO));
 	}
 
 }

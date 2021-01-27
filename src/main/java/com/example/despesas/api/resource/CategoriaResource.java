@@ -48,8 +48,8 @@ public class CategoriaResource {
 
 	@GetMapping("/{codigo}")
 	public ResponseEntity<?> buscarPorCodigo(@PathVariable Long codigo) {
-		CategoriaDTO categoriaDTO = categoriaService.buscarPorCodigo(codigo);
-		return categoriaDTO != null ? ResponseEntity.ok(categoriaDTO) : ResponseEntity.noContent().build();
+		return ResponseEntity.ok(categoriaService.buscarPorCodigo(codigo));
+		//return categoriaDTO != null ? ResponseEntity.ok(categoriaDTO) : ResponseEntity.noContent().build();
 	}
 
 }

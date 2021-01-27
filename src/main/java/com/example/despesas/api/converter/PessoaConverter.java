@@ -38,4 +38,16 @@ public class PessoaConverter {
 		return listaDTO;
 	}
 
+	public Pessoa toDtoToEntity(Long codigo) {
+		Pessoa pessoa = new Pessoa();
+		pessoa.setCodigo(codigo);
+		return pessoa;
+	}
+
+	public PessoaDTO toEntityToDto(Long codigo) {
+		PessoaDTO pessoaDTO = new PessoaDTO();
+		pessoaDTO.setCodigo(codigo);
+		return pessoaDTO;
+	}
+
 }

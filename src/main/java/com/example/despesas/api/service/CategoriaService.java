@@ -5,6 +5,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.example.despesas.api.converter.CategoriaConverter;
@@ -38,7 +39,11 @@ public class CategoriaService {
 
 	@Transactional
 	public CategoriaDTO buscarPorCodigo(Long codigo) {
-		return categoriaConverter.toEntityToDto(categoriaRepository.findOne(codigo));
+		Categoria categoria = categoriaRepository.findOne(codigo);
+		if (categoria == null) {
+			throw new EmptyResultDataAccessException(1);
+		}
+		return categoriaConverter.toEntityToDto(categoria);
 	}
 
 }
