@@ -6,6 +6,9 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.despesas.api.converter.LancamentoConverter;
@@ -50,8 +53,16 @@ public class LancamentoService {
 	}
 
 	@Transactional
-	public List<LancamentoDTO> filtrar(LancamentoFilter lancamentoFilter) {
-		return lancamentoConverter.toListToEntityToDto(lancamentoRepository.filtrar(lancamentoFilter));
+	public Page<LancamentoDTO> filtrar(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		Page<Lancamento> page = lancamentoRepository.filtrar(lancamentoFilter, pageable);
+
+		return new PageImpl<LancamentoDTO>(lancamentoConverter.toListToEntityToDto(page.getContent()), pageable,
+				page.getTotalElements());
+	}
+
+	@Transactional
+	public void remover(Long codigo) {
+		lancamentoRepository.delete(codigo);
 	}
 
 }
