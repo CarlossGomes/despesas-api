@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,16 +36,19 @@ public class LancamentoResource {
 	private ApplicationEventPublisher publisher;
 
 	@GetMapping
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public Page<LancamentoDTO> pesquisar(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		return lancamentoService.filtrar(lancamentoFilter, pageable);
 	}
 
 	@GetMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_LANCAMENTO') and #oauth2.hasScope('read')")
 	public ResponseEntity<LancamentoDTO> buscarPorCodigo(@PathVariable Long codigo) {
 		return ResponseEntity.ok(lancamentoService.buscarPorCodigo(codigo));
 	}
 
 	@PostMapping
+	@PreAuthorize("hasAuthority('ROLE_CADASTRAR_LANCAMENTO') and #oauth2.hasScope('write')")
 	public ResponseEntity<LancamentoDTO> criar(@Valid @RequestBody LancamentoDTO lancamentoDTO,
 			HttpServletResponse response) throws PessoaInexistenteOuInativaException {
 		publisher.publishEvent(new RecursoCriadoEvent(this, response, lancamentoDTO.getCodigo()));
@@ -52,6 +56,7 @@ public class LancamentoResource {
 	}
 	
 	@DeleteMapping("/{codigo}")
+	@PreAuthorize("hasAuthority('ROLE_REMOVER_LANCAMENTO') and #oauth2.hasScope('write')")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void remover(@PathVariable Long codigo) {
 		lancamentoService.remover(codigo);
