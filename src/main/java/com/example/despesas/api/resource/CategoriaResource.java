@@ -33,9 +33,6 @@ public class CategoriaResource {
 	@GetMapping
 	public List<CategoriaDTO> listar() {
 		return categoriaService.listar();
-
-		// return !categorias.isEmpty() ? ResponseEntity.ok(categorias) :
-		// ResponseEntity.noContent().build();
 	}
 
 	@PostMapping
