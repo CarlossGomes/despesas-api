@@ -21,7 +21,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @Entity
-@EqualsAndHashCode
+@EqualsAndHashCode(of = {"codigo"})
 @Table(name = "lancamento")
 public class Lancamento implements Serializable {
 
