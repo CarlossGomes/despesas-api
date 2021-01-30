@@ -36,6 +36,14 @@ public class LancamentoConverter {
 				: pessoaConverter.toEntityToDto(lancamento.getPessoa()));
 		return lancamentoDTO;
 	}
+	
+	public LancamentoDTO toEntityToDtoResume(Lancamento lancamento) {
+		LancamentoDTO lancamentoDTO = new LancamentoDTO();
+		BeanUtils.copyProperties(lancamento, lancamentoDTO);
+		lancamentoDTO.setCategoria(categoriaConverter.toEntityToDto(lancamento.getCategoria().getNome()));
+		lancamentoDTO.setPessoa( pessoaConverter.toEntityToDto(lancamento.getPessoa().getNome()));
+		return lancamentoDTO;
+	}
 
 	public LancamentoDTO toEntityToDtoCreate(Lancamento lancamento) {
 		LancamentoDTO lancamentoDTO = new LancamentoDTO();
@@ -49,6 +57,14 @@ public class LancamentoConverter {
 		List<LancamentoDTO> listaDTO = new ArrayList<>();
 		for (Lancamento lancamento : lista) {
 			listaDTO.add(toEntityToDto(lancamento));
+		}
+		return listaDTO;
+	}
+
+	public List<LancamentoDTO> toListToEntityToDtoResume(List<Lancamento> lista) {
+		List<LancamentoDTO> listaDTO = new ArrayList<>();
+		for (Lancamento lancamento : lista) {
+			listaDTO.add(toEntityToDtoResume(lancamento));
 		}
 		return listaDTO;
 	}

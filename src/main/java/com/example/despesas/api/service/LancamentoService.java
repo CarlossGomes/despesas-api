@@ -59,6 +59,13 @@ public class LancamentoService {
 		return new PageImpl<LancamentoDTO>(lancamentoConverter.toListToEntityToDto(page.getContent()), pageable,
 				page.getTotalElements());
 	}
+	
+	public Page<LancamentoDTO> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
+		Page<Lancamento> page = lancamentoRepository.filtrar(lancamentoFilter, pageable);
+		
+		return new PageImpl<LancamentoDTO>(lancamentoConverter.toListToEntityToDtoResume(page.getContent()), pageable,
+				page.getTotalElements());
+	}
 
 	@Transactional
 	public void remover(Long codigo) {

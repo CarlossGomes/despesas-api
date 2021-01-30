@@ -50,4 +50,10 @@ public class PessoaConverter {
 		return pessoaDTO;
 	}
 
+	public PessoaDTO toEntityToDto(String nome) {
+		PessoaDTO pessoaDTO = new PessoaDTO();
+		pessoaDTO.setNome(nome);
+		return pessoaDTO;
+	}
+
 }

@@ -32,4 +32,10 @@ public class CategoriaConverter {
 		return listaDTO;
 	}
 
+	public CategoriaDTO toEntityToDto(String nome) {
+		CategoriaDTO categoriaDTO = new CategoriaDTO();
+		categoriaDTO.setNome(nome);
+		return categoriaDTO;
+	}
+
 }
