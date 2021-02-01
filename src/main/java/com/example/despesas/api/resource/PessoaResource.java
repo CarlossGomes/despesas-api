@@ -36,8 +36,8 @@ public class PessoaResource {
 
 	@GetMapping
 	@PreAuthorize("hasAuthority('ROLE_PESQUISAR_PESSOA') and #oauth2.hasScope('read')")
-	public List<PessoaDTO> listar() {
-		return pessoaService.listar();
+	public List<PessoaDTO> listar(String nome) {
+		return pessoaService.listar(nome);
 	}
 
 	@PostMapping

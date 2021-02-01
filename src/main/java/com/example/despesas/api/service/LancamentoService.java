@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -28,7 +29,7 @@ public class LancamentoService {
 	private LancamentoConverter lancamentoConverter;
 
 	@Autowired
-	private PessoaService PessoaService;
+	private PessoaService pessoaService;
 
 	@Transactional
 	public List<LancamentoDTO> listar() {
@@ -47,7 +48,7 @@ public class LancamentoService {
 
 	@Transactional
 	public LancamentoDTO salvar(LancamentoDTO lancamentoDTO) throws PessoaInexistenteOuInativaException {
-		PessoaService.validarIsAtivo(lancamentoDTO.getPessoa().getCodigo());
+		pessoaService.validarIsAtivo(lancamentoDTO.getPessoa().getCodigo());
 		Lancamento lancamento = lancamentoConverter.toDtoToEntity(lancamentoDTO);
 		return lancamentoConverter.toEntityToDto(lancamentoRepository.save(lancamento));
 	}
@@ -59,10 +60,10 @@ public class LancamentoService {
 		return new PageImpl<LancamentoDTO>(lancamentoConverter.toListToEntityToDto(page.getContent()), pageable,
 				page.getTotalElements());
 	}
-	
+
 	public Page<LancamentoDTO> resumir(LancamentoFilter lancamentoFilter, Pageable pageable) {
 		Page<Lancamento> page = lancamentoRepository.filtrar(lancamentoFilter, pageable);
-		
+
 		return new PageImpl<LancamentoDTO>(lancamentoConverter.toListToEntityToDtoResume(page.getContent()), pageable,
 				page.getTotalElements());
 	}
@@ -70,6 +71,18 @@ public class LancamentoService {
 	@Transactional
 	public void remover(Long codigo) {
 		lancamentoRepository.delete(codigo);
+	}
+
+	@Transactional
+	public LancamentoDTO atualizar(Long codigo, LancamentoDTO lancamentoDTO)
+			throws PessoaInexistenteOuInativaException {
+		LancamentoDTO lancamentoSalvo = buscarPorCodigo(codigo);
+		BeanUtils.copyProperties(lancamentoDTO, lancamentoSalvo, "codigo");
+		
+		pessoaService.validarIsAtivo(lancamentoDTO.getPessoa().getCodigo());
+		lancamentoConverter.toDtoToEntity(lancamentoSalvo);
+
+		return lancamentoSalvo;
 	}
 
 }

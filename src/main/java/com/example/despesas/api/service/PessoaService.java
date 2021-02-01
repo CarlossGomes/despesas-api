@@ -25,7 +25,11 @@ public class PessoaService {
 	private PessoaConverter pessoaConverter;
 
 	@Transactional
-	public List<PessoaDTO> listar() {
+	public List<PessoaDTO> listar(String nome) {
+		if (nome != null) {
+			List<Pessoa> lista = pessoaRepository.findByNomeContains(nome);
+			return pessoaConverter.toListToEntityToDto(lista);
+		}
 		List<Pessoa> lista = pessoaRepository.findAll();
 		return pessoaConverter.toListToEntityToDto(lista);
 	}
