@@ -4,14 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-import com.example.despesas.api.config.property.DespesasApiProperty;
+import com.example.despesas.api.config.property.AlgamoneyApiProperty;
 
 @SpringBootApplication
-@EnableConfigurationProperties(DespesasApiProperty.class)
-public class DespesasApiApplication {
+@EnableConfigurationProperties(AlgamoneyApiProperty.class)
+public class AlgamoneyApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(DespesasApiApplication.class, args);
+		SpringApplication.run(AlgamoneyApiApplication.class, args);
 	}
 
 }

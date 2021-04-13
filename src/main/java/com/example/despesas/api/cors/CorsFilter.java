@@ -16,14 +16,14 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import com.example.despesas.api.config.property.DespesasApiProperty;
+import com.example.despesas.api.config.property.AlgamoneyApiProperty;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class CorsFilter implements Filter {
 	
 	@Autowired
-	private DespesasApiProperty despesasApiProperty;
+	private AlgamoneyApiProperty algamoneyApiProperty;
 
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain)
@@ -32,13 +32,13 @@ public class CorsFilter implements Filter {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
 
-		response.setHeader("Access-Control-Allow-Origin", despesasApiProperty.getOriginPermitida());
+		response.setHeader("Access-Control-Allow-Origin", algamoneyApiProperty.getOriginPermitida());
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 
 		if ("OPTIONS".equals(request.getMethod())
-				&& despesasApiProperty.getOriginPermitida().equals(request.getHeader("Origin"))) {
+				&& algamoneyApiProperty.getOriginPermitida().equals(request.getHeader("Origin"))) {
 			response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, PUT, OPTIONS");
-			response.setHeader("Access-Control-Allow-headers", "Authorization, Content-Type, Accept");
+			response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept");
 			response.setHeader("Access-Control-Max-Age", "3600");
 
 			response.setStatus(HttpServletResponse.SC_OK);

@@ -26,7 +26,7 @@ import com.example.despesas.api.service.exception.PessoaInexistenteOuInativaExce
 import com.example.despesas.api.util.Mensagens;
 
 @ControllerAdvice
-public class DespesasExceptionHandler extends ResponseEntityExceptionHandler {
+public class AlgamoneyExceptionHandler extends ResponseEntityExceptionHandler {
 
 	@Autowired
 	private MessageSource messageSource;

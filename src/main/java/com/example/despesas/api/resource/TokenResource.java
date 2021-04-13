@@ -10,20 +10,20 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.despesas.api.config.property.DespesasApiProperty;
+import com.example.despesas.api.config.property.AlgamoneyApiProperty;
 
 @RestController
 @RequestMapping("/tokens")
 public class TokenResource {
 	
 	@Autowired
-	private DespesasApiProperty despesasApiProperty;
+	private AlgamoneyApiProperty algamoneyApiProperty;
 
 	@DeleteMapping("/revoke")
 	public void revoke(HttpServletRequest req, HttpServletResponse resp) {
 		Cookie cookie = new Cookie("refreshToken", null);
 		cookie.setHttpOnly(true);
-		cookie.setSecure(despesasApiProperty.getSeguranca().isEnableHttps());
+		cookie.setSecure(algamoneyApiProperty.getSeguranca().isEnableHttps());
 		cookie.setPath(req.getContextPath() + "/oauth/token");
 		cookie.setMaxAge(0);
 
