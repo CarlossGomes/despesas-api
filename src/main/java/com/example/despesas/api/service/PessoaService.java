@@ -1,12 +1,13 @@
 package com.example.despesas.api.service;
 
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.example.despesas.api.converter.PessoaConverter;
@@ -25,13 +26,15 @@ public class PessoaService {
 	private PessoaConverter pessoaConverter;
 
 	@Transactional
-	public List<PessoaDTO> listar(String nome) {
+	public Page<PessoaDTO> filtrar(String nome, Pageable pageable) {
+		Page<Pessoa> lista = null;
 		if (nome != null) {
-			List<Pessoa> lista = pessoaRepository.findByNomeContains(nome);
-			return pessoaConverter.toListToEntityToDto(lista);
+			lista = pessoaRepository.findByNomeContains(nome, pageable);
+		} else {
+			lista = pessoaRepository.findAll(pageable);
 		}
-		List<Pessoa> lista = pessoaRepository.findAll();
-		return pessoaConverter.toListToEntityToDto(lista);
+		return new PageImpl<PessoaDTO>(pessoaConverter.toListToEntityToDto(lista.getContent()), pageable,
+				lista.getTotalElements());
 	}
 
 	@Transactional
